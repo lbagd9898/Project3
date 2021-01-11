@@ -1,0 +1,10 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+    Welcome!
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block body %}
+    <h1>Welcome {{ user.username }}</h1>
+    <a href="{%url 'log_out' %}"> logout </a>
+{% endblock %}

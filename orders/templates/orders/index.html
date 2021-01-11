@@ -1,0 +1,27 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+    Pizza
+{% endblock %}
+
+{% block body %}
+    <h1>Welcome to Pinnochio's! Login to place an order.</h1>
+    <form action="{% url 'login' %}" method="POST">
+      {% csrf_token %}
+			<div class="form-group">
+				<input type="text" name="username" class="form-control" placeholder="Username" required>
+			</div>
+			<div class="form-group">
+				<input type="password" name="password" class="form-control" placeholder="Password" required>
+			</div>
+			<button class="btn btn-primary" type="submit" value="login">Submit</button>
+		</form>
+    {% if message %}
+      <ul>
+        <li> {{ message }} </li>
+      </ul>
+    {% endif %}
+    <br>
+    <h2> Don't have an account? </h2>
+    <a href="{% url 'register' %}"> Click here to register!</a>
+{% endblock %}
