@@ -1,11 +1,230 @@
-{% extends "orders/base.html" %}
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title> Welcome to Pinnochio's!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      $(".reg_toppings").prop("disabled", true);
+      $(".sic_toppings").prop("disabled", true);
 
-{% block title %}
-    Welcome!
-{% endblock %}
-{% load crispy_forms_tags %}
-{% block body %}
-    <h1>Welcome {{ user.username }}</h1>
-    <h2> Welcomeeee </h2>
-    <a href="{%url 'log_out' %}"> logout </a>
-{% endblock %}
+      $("#reg_pizza").change(function(){
+      if($(this).find('option:selected').attr("name") == "1 Topping"){
+        $("#reg_toppings1").prop("disabled",false);
+        $("#reg_toppings2").prop("disabled",true);
+        $("#reg_toppings3").prop("disabled",true);
+      }
+      else if($(this).find('option:selected').attr("name") == "2 Toppings"){
+        $("#reg_toppings1").prop("disabled",false);
+        $("#reg_toppings2").prop("disabled",false);
+        $("#reg_toppings3").prop("disabled",true);
+      }
+      else if($(this).find('option:selected').attr("name") == "3 Toppings"){
+        $("#reg_toppings1").prop("disabled",false);
+        $("#reg_toppings2").prop("disabled",false);
+        $("#reg_toppings3").prop("disabled",false);
+      }
+      else {
+        $(".reg_toppings").prop("disabled", true);
+      }
+      checkIfEverythingIsFilledIn();
+    });
+
+    $("#sic_pizza").change(function(){
+    if($(this).find('option:selected').attr("name") == "1 Topping"){
+      $("#sic_toppings1").prop("disabled",false);
+      $("#sic_toppings2").prop("disabled",true);
+      $("#sic_toppings3").prop("disabled",true);
+    }
+    else if($(this).find('option:selected').attr("name") == "2 Toppings"){
+      $("#sic_toppings1").prop("disabled",false);
+      $("#sic_toppings2").prop("disabled",false);
+      $("#sic_toppings3").prop("disabled",true);
+    }
+    else if($(this).find('option:selected').attr("name") == "3 Toppings"){
+      $("#sic_toppings1").prop("disabled",false);
+      $("#sic_toppings2").prop("disabled",false);
+      $("#sic_toppings3").prop("disabled",false);
+    }
+    else {
+      $(".sic_toppings").prop("disabled", true);
+    }
+    checkIfEverythingIsFilledIn();
+  });
+
+  });
+  </script>
+    </head>
+    <body>
+    <header>
+      <!-- <span class="border border-secondary"> -->
+      <h1 class="text-center">Welcome, {{ user.username }}!!</h1>
+      <h2 class="text-center"> Place an Order Below </h2>
+      <!-- </span> -->
+    </header>
+    <br>
+    <div class="row">
+      <!-- Pizza Column -->
+    <div class="col">
+        <h3 class="text-center"> Pizza </h3>
+        <div class="container">
+          <!-- Regular Pizza Order Form -->
+        <form action = "{% url 'order_sicilian' %}" method="post">
+          {% csrf_token %}
+          <div class="container">
+          <div class="row justify-content-between">
+          <h4> Regular Pizzas: </h4>
+          <select name="reg_pizza" id="reg_pizza">
+            {% for pizza in reg_pizzas %}
+              <option value="{{ pizza }}" name="{{ pizza.toppings }}"> {{ pizza }} </option>
+            {% endfor %}
+          </select>
+        </div>
+        </div>
+          <br>
+          <h5> Add Toppings **if chosen**</h5>
+          <div class="container">
+            <div class="row justify-content-between">
+          <select id="reg_toppings1" class="reg_toppings" name="reg_toppings1">
+            <option disabled selected value></option>
+            {% for topping in toppings %}
+              <option value="{{ topping }}"> {{ topping }}</option>
+            {% endfor %}
+          </select>
+          <select id="reg_toppings2" class="reg_toppings" name="reg_toppings2">
+            <option disabled selected value></option>
+            {% for topping in toppings %}
+              <option value="{{ topping }}"> {{ topping }}</option>
+            {% endfor %}
+          </select>
+          <select id="reg_toppings3" class="reg_toppings" name="reg_toppings3">
+            <option disabled selected value></option>
+            {% for topping in toppings %}
+              <option value="{{ topping }}"> {{ topping }}</option>
+            {% endfor %}
+          </select>
+      </div>
+    </div>
+  <br>
+  <div class="container">
+    <div class="row justify-content-between">
+      <h5> Quantity? </h5>
+        <select name="quantity">
+          {% for i in "x"|ljust:"10" %}
+            <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Add To Cart</button>
+          </form>
+          <br>
+          <br>
+   <!-- Sicilian Pizza  Order Form  -->
+          <div class="container">
+          <form action = "{% url 'order_sicilian' %}" method="post">
+            {% csrf_token %}
+          <div class="row justify-content-between">
+            <h4> Sicilian Pizzas: </h4>
+            <select name="sic_pizza" id="sic_pizza">
+              {% for pizza in sic_pizzas %}
+                <option value="{{ pizza.id }}" name="{{ pizza.toppings }}"> {{ pizza }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          </div>
+            <br>
+            <h5> Add Toppings **if chosen**</h5>
+            <div class="container">
+              <div class="row justify-content-between">
+            <select id="sic_toppings1" class="sic_toppings" name="sic_toppings1">
+              <option disabled selected value></option>
+              {% for topping in toppings %}
+                <option value="{{ topping }}"> {{ topping }}</option>
+              {% endfor %}
+            </select>
+            <select id="sic_toppings2" class="sic_toppings" name="sic_toppings2">
+              <option disabled selected value></option>
+              {% for topping in toppings %}
+                <option value="{{ topping }}"> {{ topping }}</option>
+              {% endfor %}
+            </select>
+            <select id="sic_toppings3" class="sic_toppings" name="sic_toppings3">
+              <option disabled selected value></option>
+              {% for topping in toppings %}
+                <option value="{{ topping }}"> {{ topping }}</option>
+              {% endfor %}
+            </select>
+        </div>
+      </div>
+    <br>
+    <div class="container">
+      <div class="row justify-content-between">
+        <h5> Quantity? </h5>
+          <select name="quantity">
+            {% for i in "x"|ljust:"10" %}
+              <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+            <br>
+          <button type="submit" class="btn btn-primary">Add To Cart</button>
+            </form>
+</div>
+  </div>
+  <!-- Subs Column -->
+    <div class="col">
+        <h3 class="text-center"> Subs </h3>
+    </div>
+    <!-- Pasta Column  -->
+    <div class="col">
+        <h3 class="text-center"> Pasta </h3>
+        <form action = "{% url 'order_pasta' %}" method="post">
+          {% csrf_token %}
+          <div class="container">
+          <div class="row justify-content-between">
+          <h4> Pastas: </h4>
+          <select name="pasta">
+            {% for pasta in pastas %}
+              <option value="{{ pasta.id }}"> {{ pasta }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="container">
+      <div class="row justify-content-between">
+      <h5> Quantity? </h5>
+      <select name="quantity">
+        {% for i in "x"|ljust:"10" %}
+          <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+          <br>
+          <input type="submit" value="add to order" />
+          </form>
+    </div>
+    <!-- Salads Column  -->
+    <div class="col">
+        <h3 class="text-center"> Salads </h3>
+    </div>
+    <div class="col">
+        <h3 class="text-center"> Dinner Platters </h3>
+    </div>
+  </div>
+  <br>
+    <button> <a href="{%url 'log_out' %}"> logout </a></button>
+</body>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+</html>
