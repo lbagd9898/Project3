@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title> Orders </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+#header {
+  margin: 1%;
+}
+.items{
+  padding: 1%;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  font-size: 150%;
+  z-index: 3
+}
+</style>
+</head>
+<body>
+<div id="header" class="d-flex flex-row justify-content-center">
+  <h1> All Orders </h1>
+</div>
+<div class="container">
+  {% for order, user in orders.items %}
+    <div class="d-flex flex-row justify-content-between items">
+      <a href="{% url 'order' order %}"> Order #{{ order }} - {{ user }} </a> <a href="{% url 'order_completed' order %}" class="btn btn-primary">Order Completed</a>
+    </div>
+  {% endfor %}
+</div>
+</body>
+</html>

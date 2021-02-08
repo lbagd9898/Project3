@@ -1,0 +1,21 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+    Success!
+{% endblock %}
+
+{% block body %}
+<div class="d-flex flex-row justify-content-center items">
+    <h1> Your Order Has Been Placed! </h1>
+</div>
+<div class="d-flex flex-row justify-content-center items" style="color: gray">
+    <h3> Your Hot Delicious Food is On The Way :) </h3>
+</div>
+<br>
+<div class="d-flex flex-row justify-content-center items" style="color: gray">
+    <img src="https://i.pinimg.com/originals/93/7c/0e/937c0e2d4de7a3a8dd310ecf35a2cd4b.png"/ width="30%" height="30%">
+</div>
+<footer class="d-flex flex-row justify-content-center items" style="position: fixed; z-index: 6; margin-bottom: 1%; bottom: 0; width: 100%;">
+  <a href="{%url 'log_out' %}" style="font-size: 150%">Logout</a>
+</footer>
+{% endblock %}

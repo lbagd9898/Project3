@@ -1,0 +1,18 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+    Payment Canceled
+{% endblock %}
+
+{% block body %}
+<div class="d-flex flex-row justify-content-center items">
+    <h1> Your payment has been canceled. </h1>
+</div>
+<br>
+<div class="d-flex flex-row justify-content-center items" style="color: gray">
+    <img src="https://lh3.googleusercontent.com/proxy/J7Oh2tsK9EFttD5EE2hqU-w_FqmzmV-fDIOIGPWDNHE6DgLOUbjyiGbh0ewMIAmzqyBF_r0m8PBRACs8YK04AkaT2l8qSPxVSdy57a1WdHr9nSg1foSAalcP2Na6GhLqrP4LqCOPwNZoOyC1HHtGcu4nuqXZNA"/ width="30%" height="30%">
+</div>
+<footer class="d-flex flex-row justify-content-center items" style="position: fixed; z-index: 6; margin-bottom: 1%; bottom: 0; width: 100%;">
+  <a href="{%url 'view_cart' %}" style="font-size: 150%" class="btn btn-secondary footer-btns">Back to Cart</a>
+</footer>
+{% endblock %}

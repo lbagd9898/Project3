@@ -8,6 +8,28 @@
     $(document).ready(function() {
       $(".reg_toppings").prop("disabled", true);
       $(".sic_toppings").prop("disabled", true);
+      $(".sml-sub-btns").prop("disabled", true);
+      $(".lg-sub-btns").prop("disabled", true);
+
+      $("#small_sub").change(function(){
+      if($(this).find('option:selected').attr("name") == "Steak+Cheese"){
+        $(".sml-sub-btns").prop("disabled", false);
+        }
+      else {
+        $(".sml-sub-btns").prop("disabled", true);
+      }
+        checkIfEverythingIsFilledIn();
+      });
+
+      $("#large_sub").change(function(){
+      if($(this).find('option:selected').attr("name") == "Steak+Cheese"){
+        $(".lg-sub-btns").prop("disabled", false);
+        }
+      else {
+        $(".lg-sub-btns").prop("disabled", true);
+      }
+        checkIfEverythingIsFilledIn();
+      });
 
       $("#reg_pizza").change(function(){
       if($(this).find('option:selected').attr("name") == "1 Topping"){
@@ -55,29 +77,47 @@
 
   });
   </script>
+  <style>
+  #cart-btn {
+    font-size: 20px;
+    margin: 4%;
+    padding: 15px;
+    border: 2px solid black;
+  }
+  </style>
     </head>
     <body>
     <header>
-      <!-- <span class="border border-secondary"> -->
+      <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+          <div class="container">
       <h1 class="text-center">Welcome, {{ user.username }}!!</h1>
       <h2 class="text-center"> Place an Order Below </h2>
-      <!-- </span> -->
+    </div>
+  </div>
+    <div class="col d-flex justify-content-end align-items-center">
+      <a id="cart-btn" href="{%url 'view_cart' %}" class="btn btn-primary"> View Cart </a>
+    </div>
     </header>
+  </div>
     <br>
     <div class="row">
       <!-- Pizza Column -->
     <div class="col">
         <h3 class="text-center"> Pizza </h3>
         <div class="container">
+          <h6 class="text-center font-weight-bold"> ~Special Pizzas are our famous Meat Lovers' with Pepperoni, Sausage, Ham, and Canadian Bacon~</h6>
           <!-- Regular Pizza Order Form -->
-        <form action = "{% url 'order_sicilian' %}" method="post">
+        <form action = "{% url 'order_pizza' %}" method="post">
           {% csrf_token %}
           <div class="container">
           <div class="row justify-content-between">
           <h4> Regular Pizzas: </h4>
           <select name="reg_pizza" id="reg_pizza">
             {% for pizza in reg_pizzas %}
-              <option value="{{ pizza }}" name="{{ pizza.toppings }}"> {{ pizza }} </option>
+              <option value="{{ pizza.id }}" name="{{ pizza.toppings }}"> {{ pizza }} </option>
             {% endfor %}
           </select>
         </div>
@@ -86,25 +126,31 @@
           <h5> Add Toppings **if chosen**</h5>
           <div class="container">
             <div class="row justify-content-between">
+              <h6> Topping 1: </h6>
           <select id="reg_toppings1" class="reg_toppings" name="reg_toppings1">
-            <option disabled selected value></option>
             {% for topping in toppings %}
-              <option value="{{ topping }}"> {{ topping }}</option>
+              <option value="{{ topping.id }}"> {{ topping }}</option>
             {% endfor %}
           </select>
+        </div>
+        <br>
+        <div class="row justify-content-between">
+          <h6> Topping 2: </h6>
           <select id="reg_toppings2" class="reg_toppings" name="reg_toppings2">
-            <option disabled selected value></option>
             {% for topping in toppings %}
-              <option value="{{ topping }}"> {{ topping }}</option>
+              <option value="{{ topping.id }}"> {{ topping }}</option>
             {% endfor %}
           </select>
+        </div>
+            <br>
+            <div class="row justify-content-between">
+              <h6> Toppings 3: </h6>
           <select id="reg_toppings3" class="reg_toppings" name="reg_toppings3">
-            <option disabled selected value></option>
             {% for topping in toppings %}
-              <option value="{{ topping }}"> {{ topping }}</option>
+              <option value="{{ topping.id }}"> {{ topping }}</option>
             {% endfor %}
           </select>
-      </div>
+        </div>
     </div>
   <br>
   <div class="container">
@@ -120,7 +166,6 @@
         <br>
         <button type="submit" class="btn btn-primary">Add To Cart</button>
           </form>
-          <br>
           <br>
    <!-- Sicilian Pizza  Order Form  -->
           <div class="container">
@@ -139,25 +184,31 @@
             <h5> Add Toppings **if chosen**</h5>
             <div class="container">
               <div class="row justify-content-between">
+                <h6> Topping 1: </h6>
             <select id="sic_toppings1" class="sic_toppings" name="sic_toppings1">
-              <option disabled selected value></option>
               {% for topping in toppings %}
-                <option value="{{ topping }}"> {{ topping }}</option>
+                <option value="{{ topping.id }}"> {{ topping }}</option>
               {% endfor %}
             </select>
+          </div>
+          <br>
+          <div class="row justify-content-between">
+            <h6> Topping 2: </h6>
             <select id="sic_toppings2" class="sic_toppings" name="sic_toppings2">
-              <option disabled selected value></option>
               {% for topping in toppings %}
-                <option value="{{ topping }}"> {{ topping }}</option>
+                <option value="{{ topping.id }}"> {{ topping }}</option>
               {% endfor %}
             </select>
+          </div>
+          <br>
+          <div class="row justify-content-between">
+            <h6> Topping 3: </h6>
             <select id="sic_toppings3" class="sic_toppings" name="sic_toppings3">
-              <option disabled selected value></option>
               {% for topping in toppings %}
-                <option value="{{ topping }}"> {{ topping }}</option>
+                <option value="{{ topping.id }}"> {{ topping }}</option>
               {% endfor %}
             </select>
-        </div>
+          </div>
       </div>
     <br>
     <div class="container">
@@ -173,15 +224,244 @@
             <br>
           <button type="submit" class="btn btn-primary">Add To Cart</button>
             </form>
-</div>
-  </div>
+            </div>
+        </div>
   <!-- Subs Column -->
     <div class="col">
         <h3 class="text-center"> Subs </h3>
+        <div class="container">
+          <!-- Small sub order form -->
+        <form action = "{% url 'order_subs' %}" method="post">
+          {% csrf_token %}
+          <div class="container">
+          <div class="row">
+          <h4> Small Subs: </h4>
+        </div>
+        <div class="row">
+          <select id="small_sub" name="sub">
+            {% for sub in small_subs %}
+              <option value="{{ sub.id }}" name="{{ sub.sub }}"> {{ sub }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="container">
+      <div class="row justify-content-between">
+      <h5> Extra Cheese? (+.50) </h5>
+      <div class="radio_btns">
+      <input type = "radio"
+                 name = "cheese"
+                 id = "yes"
+                 value = "yes" />
+          <label for = "yes">Yes</label>
+          &nbsp;
+          <input type = "radio"
+                 name = "cheese"
+                 id = "no"
+                 value = "no"
+                 checked = "checked" />
+          <label for = "no">No</label>
+        </div>
     </div>
+  </div>
+    <br>
+    <div class="container">
+    <div class="row">
+    <h5>Extras for Steak+Cheese Sub (+.50 each):  </h5>
+    </div>
+    <div class = "row justify-content-between">
+      <h6> Mushrooms: </h6>
+      <div class="radio_btns">
+      <input type = "radio"
+                 name = "mushrooms"
+                 id = "yes"
+                 value = "yes"
+                 class = "sml-sub-btns"/>
+          <label for = "yes">Yes</label>
+          &nbsp;
+          <input type = "radio"
+                 name = "mushrooms"
+                 id = "no"
+                 value = "no"
+                 checked = "checked"
+                 class = "sml-sub-btns" />
+               <label for = "no">No</label>
+             </div>
+           </div>
+          <div class = "row justify-content-between">
+            <h6> Green Peppers: </h6>
+            <div class="radio_btns">
+            <input type = "radio"
+                       name = "green-peppers"
+                       id = "yes"
+                       value = "yes"
+                       class = "sml-sub-btns" />
+                <label for = "yes">Yes</label>
+                &nbsp;
+                <input type = "radio"
+                       name = "green-peppers"
+                       id = "no"
+                       value = "no"
+                       checked = "checked"
+                       class = "sml-sub-btns" />
+                     <label for = "no">No</label>
+                   </div>
+                 </div>
+     <div class = "row justify-content-between">
+       <h6> Onions: </h6>
+       <div class="radio_btns">
+       <input type = "radio"
+                  name = "onions"
+                  id = "yes"
+                  value = "yes"
+                  class = "sml-sub-btns" />
+           <label for = "yes">Yes</label>
+           &nbsp;
+           <input type = "radio"
+                  name = "onions"
+                  id = "no"
+                  value = "no"
+                  checked = "checked"
+                  class = "sml-sub-btns" />
+                <label for = "no">No</label>
+              </div>
+            </div>
+    </div>
+      <br>
+      <div class="container">
+        <div class="row justify-content-between">
+        <h5> Quantity? </h5>
+        <select name="quantity">
+          {% for i in "x"|ljust:"10" %}
+            <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+          {% endfor %}
+        </select>
+        </div>
+      </div>
+    <br>
+    <button type="submit" class = "btn btn-primary">Add To Cart </button>
+    </form>
+    <br>
+    <!-- Large sub Order Form -->
+    <form action = "{% url 'order_subs' %}" method="post">
+      {% csrf_token %}
+      <div class="container">
+      <div class="row">
+      <h4> Large Subs: </h4>
+    </div>
+    <div class="row">
+      <select name="sub" id="large_sub">
+        {% for sub in large_subs %}
+          <option value="{{ sub.id }}" name="{{ sub.sub }}"> {{ sub }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <br>
+  <div class="container">
+  <div class="row justify-content-between">
+  <h5> Extra Cheese? (+.50) </h5>
+  <div class="radio_btns">
+  <input type = "radio"
+             name = "cheese"
+             id = "yes"
+             value = "yes" />
+      <label for = "yes">Yes</label>
+      &nbsp;
+      <input type = "radio"
+             name = "cheese"
+             id = "no"
+             value = "no"
+             checked = "checked"/>
+      <label for = "no">No</label>
+    </div>
+</div>
+</div>
+<br>
+<div class="container">
+<div class="row">
+<h5>Extras for Steak+Cheese Sub (+.50 each):  </h5>
+</div>
+<div class = "row justify-content-between">
+  <h6> Mushrooms: </h6>
+  <div class="radio_btns">
+  <input type = "radio"
+             name = "mushrooms"
+             id = "yes"
+             value = "yes"
+             class = "lg-sub-btns" />
+      <label for = "yes">Yes</label>
+      &nbsp;
+      <input type = "radio"
+             name = "mushrooms"
+             id = "no"
+             value = "no"
+             checked = "checked"
+             class = "lg-sub-btns" />
+           <label for = "no">No</label>
+         </div>
+       </div>
+      <div class = "row justify-content-between">
+        <h6> Green Peppers: </h6>
+        <div class="radio_btns">
+        <input type = "radio"
+                   name = "green-peppers"
+                   id = "yes"
+                   value = "yes"
+                   class = "lg-sub-btns" />
+            <label for = "yes">Yes</label>
+            &nbsp;
+            <input type = "radio"
+                   name = "green-peppers"
+                   id = "no"
+                   value = "no"
+                   checked = "checked"
+                   class = "lg-sub-btns" />
+                 <label for = "no">No</label>
+               </div>
+             </div>
+ <div class = "row justify-content-between">
+   <h6> Onions: </h6>
+   <div class="radio_btns">
+   <input type = "radio"
+              name = "onions"
+              id = "yes"
+              value = "yes"
+              class = "lg-sub-btns" />
+       <label for = "yes">Yes</label>
+       &nbsp;
+       <input type = "radio"
+              name = "onions"
+              id = "no"
+              value = "no"
+              checked = "checked"
+              class = "lg-sub-btns" />
+            <label for = "no">No</label>
+          </div>
+        </div>
+</div>
+  <br>
+  <div class="container">
+    <div class="row justify-content-between">
+    <h5> Quantity? </h5>
+    <select name="quantity">
+      {% for i in "x"|ljust:"10" %}
+        <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+      {% endfor %}
+    </select>
+    </div>
+  </div>
+<br>
+<button type="submit" class = "btn btn-primary">Add To Cart </button>
+</form>
+  </div>
+  </div>
+
     <!-- Pasta Column  -->
     <div class="col">
         <h3 class="text-center"> Pasta </h3>
+        <div class="container">
         <form action = "{% url 'order_pasta' %}" method="post">
           {% csrf_token %}
           <div class="container">
@@ -206,19 +486,117 @@
     </div>
   </div>
           <br>
-          <input type="submit" value="add to order" />
+          <button type="submit" class = "btn btn-primary">Add To Cart </button>
           </form>
     </div>
+  </div>
     <!-- Salads Column  -->
     <div class="col">
         <h3 class="text-center"> Salads </h3>
+        <div class="container">
+          <form action = "{% url 'order_salad' %}" method="post">
+            {% csrf_token %}
+            <div class="container">
+            <div class="row justify-content-between">
+            <h4> Salads: </h4>
+            <select name="salad">
+              {% for salad in salads %}
+                <option value="{{ salad.id }}"> {{ salad }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <br>
+        <div class="container">
+        <div class="row justify-content-between">
+        <h5> Quantity? </h5>
+        <select name="quantity">
+          {% for i in "x"|ljust:"10" %}
+            <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
+            <br>
+            <button type="submit" class = "btn btn-primary">Add To Cart </button>
+            </form>
+        </div>
+    </div>
+    <!-- Dinner Platters Column -->
     <div class="col">
         <h3 class="text-center"> Dinner Platters </h3>
+        <div class="container">
+          <form action = "{% url 'order_platter' %}" method="post">
+            {% csrf_token %}
+            <div class="container">
+            <div class="row">
+            <h4> Small Dinner Platters: </h4>
+          </div>
+          <div class="row">
+            <select name="dinner_platter">
+              {% for din in sm_din_plat %}
+                <option value="{{ din.id }}" name="{{ din.platter }}"> {{ din }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <br>
+        <div class="container">
+          <div class="row justify-content-between">
+          <h5> Quantity? </h5>
+          <select name="quantity">
+            {% for i in "x"|ljust:"10" %}
+              <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+            {% endfor %}
+          </select>
+          </div>
+        </div>
+        <br>
+        <button type="submit" class = "btn btn-primary">Add To Cart </button>
+          </form>
+          <br>
+          <form action = "{% url 'order_platter' %}" method="post">
+            {% csrf_token %}
+            <div class="container">
+            <div class="row">
+            <h4> Large Dinner Platters: </h4>
+          </div>
+          <div class="row">
+            <select name="dinner_platter">
+              {% for din in lg_din_plat %}
+                <option value="{{ din.id }}" name="{{ din.platter }}"> {{ din }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <br>
+        <div class="container">
+          <div class="row justify-content-between">
+          <h5> Quantity? </h5>
+          <select name="quantity">
+            {% for i in "x"|ljust:"10" %}
+              <option value="{{ forloop.counter }}"> {{ forloop.counter }}</option>
+            {% endfor %}
+          </select>
+          </div>
+        </div>
+        <br>
+        <button type="submit" class = "btn btn-primary">Add To Cart </button>
+          </form>
+        </div>
     </div>
   </div>
-  <br>
-    <button> <a href="{%url 'log_out' %}"> logout </a></button>
+  <div class="container-fluid">
+  <div class = "d-flex flex-row">
+      <div class = "col-sm align-self-center">
+    </div>
+    <div class="col-sm text-center">
+  <a href="{%url 'log_out' %}">Logout</a>
+</div>
+<div class="col-sm">
+</div>
+</div>
+</div>
 </body>
 {% if messages %}
 <ul class="messages">
