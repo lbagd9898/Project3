@@ -1,3 +1,7 @@
-# Project 3
+# Pizza Delivery
 
-Web Programming with Python and JavaScript
+Website that allows users to order pizza online.
+
+Frameworks: Django, Stripe API
+
+Languages: Python, Javascript, HTML, CSS
